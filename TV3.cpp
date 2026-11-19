@@ -28,8 +28,8 @@ void xemTatCaDon(const HeThong& ht) {
         return;
     }
     inTieuDeBang();
-    for (const Node* p = ht.hangCho.head; p != nullptr; p = p->next) inDon(p->data);
-    for (const Node* p = ht.daXuLy.head; p != nullptr; p = p->next) inDon(p->data);
+    for (const NodeDon* p = ht.hangCho.head; p != nullptr; p = p->next) inDon(p->data);
+    for (const NodeDon* p = ht.daXuLy.head; p != nullptr; p = p->next) inDon(p->data);
     cout << "Tong: " << soCho + soXong << " don (dang cho: " << soCho
          << ", da xu ly: " << soXong << ")\n";
 }
@@ -70,30 +70,30 @@ using namespace std;
 struct Ngay { int ngay, thang, nam; };
 enum TrangThai { CHO_PHE_DUYET, DA_DUYET, HUY, HOAN_THANH };
 struct DonHang { string maDon, tenKhach; long long tongTien; Ngay ngayTao; TrangThai trangThai; };
-struct Node { DonHang data; Node* next; };
-struct HangDoi { Node* head; Node* tail; int size; };
+struct NodeDon { DonHang data; NodeDon* next; };
+struct HangDoi { NodeDon* head; NodeDon* tail; int size; };
 struct HeThong { HangDoi hangCho; HangDoi daXuLy; };
 
 void khoiTao(HangDoi& q) { q.head = q.tail = nullptr; q.size = 0; }
 int kichThuoc(const HangDoi& q) { return q.size; }
 void enqueue(HangDoi& q, const DonHang& d) {
-    Node* n = new Node{d, nullptr};
+    NodeDon* n = new NodeDon{d, nullptr};
     if (q.head == nullptr) q.head = q.tail = n; else { q.tail->next = n; q.tail = n; }
     q.size++;
 }
 bool dequeue(HangDoi& q, DonHang& kq) {
     if (q.head == nullptr) return false;
-    Node* c = q.head; kq = c->data; q.head = c->next;
+    NodeDon* c = q.head; kq = c->data; q.head = c->next;
     if (q.head == nullptr) q.tail = nullptr;
     delete c; q.size--; return true;
 }
 DonHang* timTheoMa(HangDoi& q, const string& ma) {
-    for (Node* p = q.head; p != nullptr; p = p->next) if (p->data.maDon == ma) return &p->data;
+    for (NodeDon* p = q.head; p != nullptr; p = p->next) if (p->data.maDon == ma) return &p->data;
     return nullptr;
 }
 bool xoaTheoMa(HangDoi& q, const string& ma) {
-    Node* truoc = nullptr;
-    for (Node* p = q.head; p != nullptr; truoc = p, p = p->next) {
+    NodeDon* truoc = nullptr;
+    for (NodeDon* p = q.head; p != nullptr; truoc = p, p = p->next) {
         if (p->data.maDon == ma) {
             if (truoc == nullptr) q.head = p->next; else truoc->next = p->next;
             if (p == q.tail) q.tail = truoc;
@@ -196,8 +196,8 @@ void xemTatCaDon(const HeThong& ht) {
         return;
     }
     inTieuDeBang();
-    for (const Node* p = ht.hangCho.head; p != nullptr; p = p->next) inDon(p->data);
-    for (const Node* p = ht.daXuLy.head; p != nullptr; p = p->next) inDon(p->data);
+    for (const NodeDon* p = ht.hangCho.head; p != nullptr; p = p->next) inDon(p->data);
+    for (const NodeDon* p = ht.daXuLy.head; p != nullptr; p = p->next) inDon(p->data);
     cout << "Tong: " << soCho + soXong << " don (dang cho: " << soCho
          << ", da xu ly: " << soXong << ")\n";
 }
